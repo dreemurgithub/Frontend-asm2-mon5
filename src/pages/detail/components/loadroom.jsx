@@ -40,15 +40,15 @@ export default function LoadRoom({obj}) {
             )
         }).then(() => document.querySelector('#Transaction_link').click())
     }
-
+    const A_day = new Date();A_day.setDate(A_day.getDate()-1)
     const [state, setState] = useState([
         {
-            startDate: new Date(),
-            endDate: new Date(),
+            startDate: A_day,
+            endDate: A_day,
             key: 'selection'
         }
     ]);
-    const [date_state, setDate_state] = useState([new Date(), new Date()])
+    const [date_state, setDate_state] = useState([new Date(), new Date() ])
     // lấy datediff của date_state[1] và date_state[0] tính số ngày nhân giá phòng
     useMemo(() => {//đổi ngày bắt đầu trong input
         setDate_state((date_state) => {
@@ -83,7 +83,6 @@ export default function LoadRoom({obj}) {
                 <h3>Total Bills: $<span id='total'></span></h3>
                 {/*// use context*/}
                 <select name="" id="payment">
-                    <option value="">Select Payment Method</option>
                     <option value="Credit Card">Credit Card</option>
                     <option value="Cash">Cash</option>
                 </select> <br/>
@@ -100,7 +99,7 @@ export default function LoadRoom({obj}) {
                      state={state} setState={setState}
         />
         {
-            obj.rooms.map(el => <Room id={el}/>)
+            obj.rooms.map(el => <Room id={el} date_state={date_state}/>)
         }
 
     </>
@@ -110,12 +109,7 @@ function Date_picker({state, setState, date_state, setDate_state}) {
     return (
         <>
             <div>
-                <div style={{display: 'flex'}}>
-                    <input type="text" value={date_state[0].toLocaleDateString()}
-                           style={{width: '17em', textAlign: 'center'}}/>
-                    <input type="text" value={date_state[1].toLocaleDateString()}
-                           style={{width: '17em', textAlign: 'center'}}/>
-                </div>
+                <h3>Select the time you want to stay here</h3>
                 < DateRangePicker
                     onChange={(item) => {
                         setState([item.selection])
@@ -132,7 +126,7 @@ function Date_picker({state, setState, date_state, setDate_state}) {
     );
 }
 
-function Room({id}) {
+function Room({id, date_state}) {
     const [room_list, set_list] = useState([])
     useEffect(() => {
         fetch(`http://localhost:5000/hotel_room/${id}`, {
@@ -142,12 +136,15 @@ function Room({id}) {
             .then(res => res.json()).then(data => setroom(data))
     }, [])
     const [room, setroom] = useState(null)
+
     useEffect(() => {
         if (room !== null) localStorage.setItem(room._id, JSON.stringify({
             price: room.price,
-            room_list: room_list
+            room_list: room_list  // reset localstorage mỗi lần load page mới
         }))
     })
+
+
     if (room === null) return;
     if (room !== null) return <>
         <div style={{marginLeft: '5em'}} id={room._id}>
@@ -159,37 +156,88 @@ function Room({id}) {
                 <div>
                     <p>Pay nothing until {room.updatedAt.toString().slice(0, 10)}</p>
                     <p>max people: {room.maxPeople}</p>
-
                 </div>
                 <div style={{display: 'flex', gap: '0.5em'}}>
-                    {room.roomNumbers.map(el => <div
-                        style={{
-                            display: 'grid',
-                            gridTemplateRows: '1fr 1fr',
-                            gridTemplateColumns: '1fr'
-                        }}>
-                        <label htmlFor="">{el}</label>
-                        <input type="checkbox" onChange={(e) => {
-                            if (e.target.checked === true) {
-                                set_list((room_list) => {
-                                    if (room_list.includes(el) === false) room_list.push(el)
-                                    return room_list.map(el => el)
-                                })
-                            }
-                            if (e.target.checked === false) {
-                                set_list((room_list) => {
-                                    let index = room_list.indexOf(el)
-                                    return room_list.splice(index, 1)
-                                })
-                            }
-                        }}/>
 
-                    </div>)}
+                    {room.date_fill.map(el => <Display_room
+                        el={el}
+                        room_list={room_list}
+                        set_list={set_list}
+                        dateStart={date_state[0]}
+                        dateEnd={ date_state[1]}
+                    />)}
+
 
                 </div>
-
             </div>
-            <h3>${room.price}</h3>
+            <h3>${room.price} - Mai update phòng theo ngày phòng ko contain đã book, check từ Room Schema</h3>
+        </div>
+
+    </>
+}
+
+function Display_room({el, set_list, room_list, dateStart, dateEnd}) {
+    const [show, setshow] = useState('block')
+
+    function date_loop(date_end, date_start) {
+        const new_date_start = new Date(date_start)
+        const new_date_end = new Date(date_end)
+        const list = []
+        while (new_date_start.getTime() <= new_date_end.getTime()) {
+            const new_p = new Date(new_date_start)
+            list.push(new_p.getTime())
+            new_date_start.setDate(new_date_start.getDate() + 1)
+        }
+        return list
+    }
+
+    const list = date_loop(dateEnd, dateStart)
+
+    useEffect(() => {
+        // ko rõ vì sao có thể load về array trống dù đã có ngày trong room, if => loại trừ hết, kể cả room trống
+        if (el.date.length>0){
+            const check = el.date.map(el => {
+                return (new Date(el)).getTime()
+            })
+            console.log([list,check])
+            let i=0
+            list.forEach(el=>{   if (check.includes(el)) i+=1 })
+            if (i>0) setshow('none'); else setshow('block')
+        }
+
+    })
+    // list.forEach(date=>{
+    //     const new_date = new Date(date)
+    //     check.forEach( date_check=>{
+    //         const new_date_check = new Date(date_check)
+    //         if (new_date_check.getTime()=== new_date.getTime()){
+    //             setshow('none')
+    //
+    //         }
+    //     } )
+    // })
+    return <>
+        <div
+            style={{
+                display: 'grid',
+                gridTemplateRows: '1fr 1fr',
+                gridTemplateColumns: '1fr'
+            }}>
+            <label htmlFor="">{el.room}</label>
+            <input type="checkbox" style={{display: show}} onChange={(e) => {
+                if (e.target.checked === true) {
+                    set_list((room_list) => {
+                        if (room_list.includes(el) === false) room_list.push(el)
+                        return room_list.map(el => el)
+                    })
+                }
+                if (e.target.checked === false) {
+                    set_list((room_list) => {
+                        let index = room_list.indexOf(el)
+                        return room_list.splice(index, 1)
+                    })
+                }
+            }}/>
         </div>
 
     </>
