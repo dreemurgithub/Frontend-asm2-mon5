@@ -170,7 +170,7 @@ function Room({id, date_state}) {
 
                 </div>
             </div>
-            <h3>${room.price} - Mai update phòng theo ngày phòng ko contain đã book, check từ Room Schema</h3>
+            <h3>${room.price}</h3>
         </div>
 
     </>

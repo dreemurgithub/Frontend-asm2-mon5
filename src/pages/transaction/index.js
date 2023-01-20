@@ -11,11 +11,8 @@ export default function Transaction() {
             }).then(res => res.json()).then(data => setState(data))
     },[])
     if(state!== null) return <>
-        <h1>Hello Transaction</h1>
-        <h2>Console log ok, tìm transaction.js trong backend và xuất ra table</h2>
         <table>
             <tr>
-                <th >#</th>
                 <th style={{width:'20em', textAlign:'center'} }>Hotel</th>
                 <th style={{width:'10em', textAlign:'center'} }>Room</th>
                 <th style={{width:'15em', textAlign:'center'} }>Date</th>
@@ -25,7 +22,6 @@ export default function Transaction() {
             </tr>
             {state.map(el => {
                 return <tr>
-                    <td></td>
                     <td>{el.hotel.name}</td>
                     <td>{el.roomNumbers.toString()}</td>
                     <td>{el.dateStart.toString().slice(0, 10)} - {el.dateEnd.toString().slice(0, 10)}</td>
