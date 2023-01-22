@@ -1,0 +1,33 @@
+.footer{
+    display: flex;
+    justify-content:space-evenly;
+
+}
+.footer-column{
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.footer-link{
+    color: #1e90ff;
+    text-decoration: none;
+}
+.sign-up{
+    text-align:center;
+    scale:2;
+    margin-bottom:3em;
+    background:skyblue;
+    /*margin: 0-9999rem;*/
+    /*padding: 0.25rem 9999rem;*/
+    padding-bottom: 2em;
+    margin-top: 10em;
+    margin-bottom: 4em;
+}
+.sign-up-btn{
+    background:#1e90ff;
+    color: white;
+    border-radius: 0.3em;
+}
+.sign-up-btn:hover,.sign-up-btn:active{
+    background:black;
+
+}

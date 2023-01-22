@@ -1,0 +1,51 @@
+/* layout detail */
+.gallery-container{
+    display: grid;
+    gap: 2em;
+}
+.description-box{
+
+}
+.register-box{
+    background:wheat;
+    width: 20vw;
+    padding: 1em;
+    display: grid;
+    grid-template-rows: auto auto;
+
+}
+.foot{
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    grid-auto-rows: auto auto;
+    gap:2em;
+    overflow-x: hidden;
+}
+/* grid gallery */
+.gallery-box{
+    display: flex;
+}
+.gallery-box>img{
+    max-width: 25em;
+    height: 15em;
+}
+/* other style */
+
+.register-button{
+    background: #1e90ff;
+    color: white;
+    font-weight: 900;
+    border-radius: 0.3em;
+    padding: 0.3em;
+}
+.register-box>button:active,.register-box>button:hover{
+    background:black;
+
+}
+.description-box>p{
+    text-align:justify;
+}
+.register-box>div>p{
+    text-align:justify;
+
+}

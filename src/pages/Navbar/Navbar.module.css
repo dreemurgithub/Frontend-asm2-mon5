@@ -1,0 +1,40 @@
+.header-container{
+    display: flex;
+    flex-direction: column;
+    gap:2em;
+    /*background: #1e90ff;*/
+    /*margin: 0-9999rem;*/
+    /*padding: 0.25rem 9999rem;*/
+    margin: 1em;
+    font-weight: bold;
+    font-size: 1.2em;
+
+}
+.header-container:after{
+    position: absolute;
+    top: 0;
+    right: 0px;
+    width: 1000px;
+    height: 100%;
+    background-color: transparent;
+    content: "";
+    z-index: -1;
+  }
+.header-icon{
+    display: flex;
+    clear:both;
+    gap:0.5em;
+    margin-left: 2em;
+    margin-right: 2em;
+    
+}
+.header-text{
+    float: left;
+    margin-left: 1em;
+    color:white
+}
+.header-button{
+    float:right;
+    margin-right: 1em;
+
+}

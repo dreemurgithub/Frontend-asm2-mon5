@@ -1,0 +1,80 @@
+/* Layout */
+.container-search{
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2em;
+}
+/* Hotel styles */
+.grid-card{
+    display: grid;
+    grid-template-columns: 16em 25em 10em;
+    margin-top: 2em;
+    gap: 2em;
+    border: solid 1px burlywood;
+    width: 55em;
+}
+.grid-card>div>span{
+    color: green;
+}
+
+.pic-card{
+    width: 15em;
+    max-height: 10em;
+
+}
+.top-text{
+    display: flex;
+    justify-content: space-between;
+
+}
+.top-text>p{
+    background: black;
+    color: white;
+}
+.bottom-text{
+    text-align: right;
+}
+.container-1st-text{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.bottom-text>button{
+    font-size: 1.2em;
+    color: white;
+    background: #1e90ff;
+    border-radius: 0.5em;
+}
+.bottom-text>button:hover,.bottom-text>button :active{
+    font-size: 1.2em;
+    color: white;
+    background: black;
+}
+.bottom-text>p{
+    font-weight: 600;
+    font-size: 1.5em;
+}
+.form-below{
+    display: flex;
+    justify-content: space-between;
+}
+/* From styles */
+/*form{*/
+/*    background: orange;*/
+/*    height: 20em;*/
+/*    border: 1px solid orange;*/
+/*    border-radius:0.5em ;*/
+/*    padding: 1em;*/
+/*}*/
+.form-button{
+    width: 11em;
+    background:#1e90ff;
+    color: white;
+    font-weight: bold;
+    font-size: 1.5em;
+    text-align: center;
+}
+.form-button:active,.form-button:hover{
+    background: black;
+
+}

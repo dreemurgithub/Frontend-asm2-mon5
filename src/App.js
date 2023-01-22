@@ -14,7 +14,6 @@ import Login_context from "./context_data/user";
 import Date_context from "./context_data/date";
 import {useMemo, useState} from "react";
 import Transaction from "./pages/transaction";
-
 function App() {
     const [user_login, set_user_login] = useState('')
 
