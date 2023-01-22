@@ -177,6 +177,10 @@ function Room({id, date_state}) {
 }
 
 function Display_room({el, set_list, room_list, dateStart, dateEnd}) {
+    useEffect(()=>{
+        document.querySelectorAll('.pick_room').forEach(el=>el.checked=false)
+        //TODO change date => uncheck all input for safety
+    },[dateEnd,dateStart])
     const [show, setshow] = useState('block')
 
     function date_loop(date_end, date_start) {
@@ -224,7 +228,8 @@ function Display_room({el, set_list, room_list, dateStart, dateEnd}) {
                 gridTemplateColumns: '1fr'
             }}>
             <label htmlFor="">{el.room}</label>
-            <input type="checkbox" style={{display: show}} onChange={(e) => {
+            {/* //TODO to uncheck all input when change date */}
+            <input type="checkbox" style={{display: show}} className='pick_room' onChange={(e) => {
                 if (e.target.checked === true) {
                     set_list((room_list) => {
                         if (room_list.includes(el) === false) room_list.push(el)

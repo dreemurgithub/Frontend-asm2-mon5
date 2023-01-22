@@ -5,8 +5,6 @@ import {useEffect, useState} from "react";
 
 export default function Detail_page() {
     const {id} = useParams()
-    console.log(id)
-
 
     const [obj, setobj] = useState()
     useEffect(() => {
@@ -15,20 +13,23 @@ export default function Detail_page() {
             headers: {'Content-Type': 'application/json'}
         })
             .then(res => res.json()).then(data => setobj(data))
-    }, [])
+    }, [id])
     if (obj === null || obj === undefined) return null;
     if (obj !== null && obj !== undefined) return <div>
-        <h1>{obj.name}</h1>
-        {/*<button style={{float: 'right'}} className={styles['register-button']}>Reserve or Book Now</button>*/}
-        <i className="fa fa-map-marker" aria-hidden="true"></i>{obj.address}
-        <p>Excellent location - {obj.distance}m from center</p>
-        <p>Book a stay over ${obj.cheapestPrice} at this property and get a free airport taxi</p>
-        <div className={styles['gallery-container']}>
-            <div className={styles['gallery-box']}>
-                {obj.photos.map((el) => {
-                    return <img src={el} alt="" style={{maxWidth:'20em', width:'60%'}}/>
-                })}
-            </div>
+        <div>
+
+            <h1>{obj.name}</h1>
+            <i className="fa fa-map-marker" aria-hidden="true"></i>{obj.address}
+            <p>Excellent location - {obj.distance}m from center</p>
+            <p>Book a stay over ${obj.cheapestPrice} at this property and get a free airport taxi</p>
+
+            <div className={styles['gallery-container']}>
+                <div className={styles['gallery-box']}>
+                    {obj.photos.map((el) => {
+                        return <img src={el} alt="" style={{maxWidth: '20em', width: '60%'}}/>
+                    })}
+                </div>
+        </div>
             <div className={styles['foot']}>
                 <div className={styles['description-box']}>
                     <h3>{obj.title}</h3>

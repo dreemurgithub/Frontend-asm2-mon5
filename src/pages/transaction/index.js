@@ -8,7 +8,7 @@ export default function Transaction() {
             fetch(`http://localhost:5000/booking/${localStorage.getItem('user_id')}`, {
                 method: 'get', mode: 'cors', credentials: 'include',
                 headers: {'Content-Type': 'application/json'}
-            }).then(res => res.json()).then(data => setState(data))
+            }).then(res => res.json()).then(data => {setState(data)})
     },[])
     if(state!== null) return <>
         <table>
@@ -24,7 +24,7 @@ export default function Transaction() {
                 return <tr>
                     <td>{el.hotel.name}</td>
                     <td>{el.roomNumbers.toString()}</td>
-                    <td>{el.dateStart.toString().slice(0, 10)} - {el.dateEnd.toString().slice(0, 10)}</td>
+                    <td>{new Date(el.dateStart.toString()).toLocaleDateString()} - {new Date(el.dateEnd.toString()).toLocaleDateString()}</td>
                     <td>${el.price}</td>
                     <td>{el.Payment}</td>
                     <td>{el.status}</td>
