@@ -58,7 +58,5 @@ server tính toán, có thể dùng nút "Calculate total" để tính trước 
 Click vào "Reserve now" sẽ thực hiện post request tới server /booking , với post request chứa toàn bộ các phòng (với một
 số phòng được chọn). Phòng được đặt và không đặt sẽ được xử lí tại server
 
-### Search hotel
 
-Post request tới /search trên server, với body là context
 
