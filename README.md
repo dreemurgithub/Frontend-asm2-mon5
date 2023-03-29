@@ -1,70 +1,64 @@
-# Getting Started with Create React App
+# App tạo từ create-react-app
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Dev enviroment, deploy, cách vận hành
 
-## Available Scripts
+### Server link trong url.js
 
-In the project directory, you can run:
+```
+const backend_url = window.location.host.includes('localhost') ? 'http://localhost:5000' : 'https://Hotelbackendasm2.ducminh27.repl.co';
+```
 
-### `npm start`
+Dưới dev enviroment server là localhost:5000, deploy server sẽ là https://Hotelbackendasm2.ducminh27.repl.co và deploy
+server có coldstart nên sẽ load sản phẩm lần đầu tiên trong 30s
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Deploy site
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+https://hotel-asm.firebaseapp.com/ với account có sẵn là xxx@x.com với password 4444 hoặc có thể
+vào https://hotel-asm.firebaseapp.com/user để tạo user mới, tài khoản này không có quyền admin để edit thông tin khách
+sạn những đã có sẵn 1 loạt transaction trong https://hotel-asm.firebaseapp.com/transaction.
 
-### `npm test`
+## Cách vận hành
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Sử dụng react context để thực hiện post request khi khách hàng thực hiện search khách sạn phù hợp, react date để chọn
+date object trong react context. Chức năng đặt phòng còn trống được sử dụng qua việc load thông tin từ server để kiểm
+tra thời gian trống của phòng.
 
-### `npm run build`
+## Chi tiết chức năng
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Context cho lệnh search
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Context sử dụng hook useMemo ở ngoài App.js để update ngày khách hàng muốn tới nơi. Ngoài ra context cũng là State khi
+ta edit các thông tin như số người lớn, trẻ em, ngày đi, ngân sách thì context sẽ được update qua mọi page để dễ dàng
+tìm kiếm khách sạn phù hợp
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Fetch thông tin trên homepage
 
-### `npm run eject`
+Các loại property, như Hotel, Apartment... , cũng như số lượng tại mỗi thành phố được lấy trên /home của server về,
+server lấy document của mongodb để tạo ra một Object lớn chứa số lượng hotels từng loại ở từng thành phố. Coldstart của
+Server sẽ khiến cho
+tất cả các con số là 0(state ban đầu) trong lần đầu mở site, nhưng sau tầm 30s sẽ được update.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Mọi transaction của user
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Thực hiện get request với /booking/idUser để lấy toàn bộ, userID(không phải username) được lưu trong Localstorage mỗi
+khi đăng nhập và xóa khi signout
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Kiểm tra thời gian trống của phòng trong khách sạn
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Room được tạo component riêng và có sẵn thông tin những ngày trống từ server bên trong Object Room, mỗi lần thay đổi
+thời gian trên Client, Object Room này sẽ so sánh
+với date bên trong, nếu date bên trong của Room Object không chứa thì vẫn hiển thị, nếu có chứa thì bị giấu đi, không
+thể tick được.
 
-## Learn More
+### Book phòng
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Toàn bộ phòng mỗi khi load đều được lưu vào Localstorage theo ID, tính toán tiền phòng là dựa theo server, không phải
+Client, dựa vào list các phòng đặt, thời gian để
+server tính toán, có thể dùng nút "Calculate total" để tính trước tiền phòng trên Client.
+Click vào "Reserve now" sẽ thực hiện post request tới server /booking , với post request chứa toàn bộ các phòng (với một
+số phòng được chọn). Phòng được đặt và không đặt sẽ được xử lí tại server
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Search phòng
 
-### Code Splitting
+Post request tới /search trên server, với body là context
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
